@@ -13,6 +13,7 @@ q = Auth(access_key, secret_key)
 #要上传的空间
 bucket_name = app.config['QINIU_BUCKET_NAME']
 save_dir=app.config['UPLOAD_DIR']
+domain_prefix=app.config['QINIU_DOMAIN']
 
 def qiniu_upload_file(source_file,save_file_name):
     # 生成上传 Token，可以指定过期时间等
@@ -23,5 +24,8 @@ def qiniu_upload_file(source_file,save_file_name):
    # ret, info = put_stream(token,save_file_name, source_file.stream,
                           #"qiniu",source_file.stream.tell())
     print(info)
+
+    if info.status_code==200:
+        return domain_prefix+save_file_name
 
     return None
